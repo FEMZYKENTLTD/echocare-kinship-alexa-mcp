@@ -1,0 +1,58 @@
+{
+  "name": "echocare-kinship-alexa-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EchoCare Kinship — Proactive Aging-in-Place, Cognitive Biomarker & Medication Guardian for Alexa+. A self-hosted MCP 2025-11-25 Streamable HTTP server with MCP Apps (ui://), an Agent Skill (SKILL.md), an AWS Bedrock + Strands-style multi-agent pipeline, and a simulated Alexa+ Echo Show 15 web app.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FEMZYKENTLTD/echocare-kinship-alexa-mcp.git"
+  },
+  "homepage": "https://github.com/FEMZYKENTLTD/echocare-kinship-alexa-mcp",
+  "keywords": [
+    "alexa-plus",
+    "mcp",
+    "model-context-protocol",
+    "mcp-2025-11-25",
+    "mcp-apps",
+    "agent-skills",
+    "aws-bedrock",
+    "strands",
+    "aging-in-place",
+    "cognitive-biomarkers",
+    "medication-safety"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:kit": "tsc -p packages/alexa-mcp-2025-kit/tsconfig.json",
+    "build": "npm run build:kit && tsc -p tsconfig.json",
+    "dev": "tsx watch src/server/index.ts",
+    "start": "tsx src/server/index.ts",
+    "start:built": "node dist/server/index.js",
+    "test": "tsx --test tests/echocare-mcp.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.900.0",
+    "@modelcontextprotocol/ext-apps": "^1.7.5",
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "alexa-mcp-2025-kit": "file:./packages/alexa-mcp-2025-kit",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "tsx": "^4.20.6",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.18.0",
+    "typescript": "^5.9.2"
+  },
+  "echocare": {
+    "companionOpenSourceKit": "https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit",
+    "mcpProtocolVersion": "2025-11-25"
+  }
+}

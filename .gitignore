@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage/
+# NOTE: packages/alexa-mcp-2025-kit/dist/ is intentionally committed so that
+# `npm install && npm start` works with zero build step (see README).
+!packages/alexa-mcp-2025-kit/dist/
+!packages/alexa-mcp-2025-kit/dist/**
