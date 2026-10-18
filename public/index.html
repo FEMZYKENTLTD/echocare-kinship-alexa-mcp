@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>EchoCare Kinship — Alexa+ MCP 2025-11-25 Guardian (Echo Show 15 Simulator)</title>
+<meta name="description" content="EchoCare Kinship: proactive aging-in-place, cognitive biomarker & medication guardian for Alexa+. Self-hosted MCP 2025-11-25 Streamable HTTP server with MCP Apps, Agent Skill and AWS Bedrock."/>
+<link rel="stylesheet" href="/styles.css"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark" aria-hidden="true"><span></span></div>
+    <div>
+      <div class="brand-title">EchoCare Kinship</div>
+      <div class="brand-sub">Alexa+ MCP <b>2025-11-25</b> Guardian · Aging-in-Place · Cognitive Biomarkers · Medication Safety</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <div class="conn-badge" id="connBadge" title="Live MCP session">
+      <span class="dot" id="connDot"></span>
+      <span id="connText">Connecting to /mcp…</span>
+    </div>
+    <a class="kit-badge" href="https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit" target="_blank" rel="noopener">
+      🧰 alexa-mcp-2025-kit <span class="kit-sub">Open-Source Toolkit ↗</span>
+    </a>
+    <label class="tts-toggle" title="Speak Alexa+ responses aloud (browser text-to-speech)">
+      <input type="checkbox" id="ttsToggle"/>
+      <span class="toggle-ui"></span> 🔊 Voice
+    </label>
+    <button id="demoBtn" class="demo-btn">▶ Auto-Play 90s Hackathon Demo</button>
+  </div>
+</header>
+
+<div class="demo-progress" id="demoProgress" hidden>
+  <div class="demo-progress-bar"><i id="demoProgressFill"></i></div>
+  <div class="demo-caption" id="demoCaption">Preparing demo…</div>
+  <button id="demoStop" class="mini-btn">■ Stop</button>
+</div>
+
+<main class="layout">
+  <!-- ================= LEFT: Echo Show 15 ================= -->
+  <section class="stage">
+    <div class="pill-row" role="group" aria-label="One-click scenarios">
+      <button class="pill" data-scenario="1">🧠 1. Morning Memory &amp; Cognitive Check-In</button>
+      <button class="pill" data-scenario="2">💊 2. “Can I take Advil with my morning pills?”</button>
+      <button class="pill" data-scenario="3">🔥 3. Unattended Kitchen Stove Anomaly</button>
+      <button class="pill" data-scenario="4">👨‍👩‍👧 4. AWS Bedrock Family Care Circle Digest</button>
+    </div>
+
+    <div class="show15-wrap">
+      <div class="show15" aria-label="Simulated Amazon Echo Show 15">
+        <div class="show15-camera" title="Camera with privacy shutter"><i></i></div>
+        <div class="screen">
+          <div class="screen-topbar">
+            <span id="clock">--:--</span>
+            <span class="screen-weather">📍 Ibadan · 29°C ☀️</span>
+            <span class="screen-net">Alexa+ · MCP 2025-11-25</span>
+          </div>
+
+          <!-- Idle home -->
+          <div id="homeScreen" class="home-screen">
+            <div class="home-time" id="homeTime">--:--</div>
+            <div class="home-date" id="homeDate">—</div>
+            <div class="home-greet">Ẹ kú àárọ̀, <b>Mama Adebayo</b> 🌤️</div>
+            <div class="home-chips" id="homeChips">
+              <span class="hchip">💊 Morning medicines on track</span>
+              <span class="hchip">💧 5/7 glasses of water</span>
+              <span class="hchip">🧠 Baseline steady · 7 days</span>
+            </div>
+            <div class="home-hint">Tap a scenario above — or just talk to me below.<br/>This screen renders live <code>ui://</code> MCP App cards from the real <code>/mcp</code> server.</div>
+          </div>
+
+          <!-- MCP App viewport -->
+          <iframe id="appFrame" class="app-frame" title="MCP App view (ui://)" sandbox="allow-scripts" hidden></iframe>
+
+          <!-- Captions -->
+          <div class="captions" id="captions" hidden>
+            <div class="cap cap-user" id="capUser" hidden><span class="cap-who">Mama Adebayo</span><span id="capUserText"></span></div>
+            <div class="cap cap-alexa" id="capAlexa" hidden><span class="cap-who alexa">Alexa+</span><span id="capAlexaText"></span></div>
+          </div>
+        </div>
+        <div class="light-bar idle" id="lightBar" aria-hidden="true"><i></i></div>
+      </div>
+      <div class="show15-stand" aria-hidden="true"></div>
+    </div>
+
+    <form class="input-row" id="inputForm">
+      <button type="button" id="micBtn" class="mic-btn" title="Speak (Web Speech API)">🎙️</button>
+      <input id="textInput" type="text" autocomplete="off" placeholder="Ask Alexa+… e.g. “Alexa, my knee hurts — can I take two Advil with my morning pills?”"/>
+      <button type="submit" class="send-btn">Ask ▸</button>
+    </form>
+    <div class="stage-foot">
+      Simulated Echo Show 15 host · MCP Apps bridge over <code>postMessage</code> · every card button fires a real <code>POST /mcp tools/call</code> · <button class="linklike" id="homeBtn">⌂ Home screen</button> · <button class="linklike" id="resetSessionBtn">Reset MCP session</button>
+    </div>
+  </section>
+
+  <!-- ================= RIGHT: Judge & Protocol Inspector ================= -->
+  <aside class="inspector">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="wire" role="tab">🔌 Live JSON-RPC Wire</button>
+      <button class="tab" data-tab="audit" role="tab">✅ 2025-11-25 Audit</button>
+      <button class="tab" data-tab="skill" role="tab">📜 SKILL.md &amp; Bedrock</button>
+    </div>
+
+    <!-- Wire inspector -->
+    <section class="panel" id="panel-wire">
+      <div class="panel-head">
+        <div>
+          <b>JSON-RPC 2.0 · MCP 2025-11-25 · Streamable HTTP</b>
+          <div class="muted small" id="wireMeta">session —</div>
+        </div>
+        <button class="mini-btn" id="clearWire">Clear</button>
+      </div>
+      <div class="wire-log" id="wireLog"></div>
+    </section>
+
+    <!-- Compliance audit -->
+    <section class="panel" id="panel-audit" hidden>
+      <div class="panel-head">
+        <div>
+          <b>8-Point MCP 2025-11-25 Compliance Audit</b>
+          <div class="muted small">Powered by <a href="https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit" target="_blank" rel="noopener">alexa-mcp-2025-kit</a> · <code>runMcp2025ComplianceAudit()</code> — runs live against this server's <code>/mcp</code>.</div>
+        </div>
+      </div>
+      <button id="runAudit" class="audit-btn">▶ Run Live Compliance Audit</button>
+      <div id="auditSummary" class="audit-summary" hidden></div>
+      <div id="auditList" class="audit-list"></div>
+    </section>
+
+    <!-- Skill & Bedrock -->
+    <section class="panel" id="panel-skill" hidden>
+      <div class="panel-head"><b>Agent Skill &amp; AWS Bedrock / Strands Trace</b></div>
+      <div class="bedrock-card" id="bedrockCard">Loading runtime info…</div>
+      <h3>Strands agent trace <span class="muted small">(latest digest run — run Scenario 4)</span></h3>
+      <div id="traceList" class="trace-list"><div class="muted small">No digest run yet.</div></div>
+      <h3><code>skills/echocare-kinship/SKILL.md</code> <span class="muted small">(loaded at boot by alexa-mcp-2025-kit)</span></h3>
+      <div id="skillMeta" class="skill-meta"></div>
+      <pre id="skillBody" class="skill-body">Loading…</pre>
+    </section>
+  </aside>
+</main>
+
+<footer class="footer">
+  <span>EchoCare Kinship · MIT · <a href="https://github.com/FEMZYKENTLTD/echocare-kinship-alexa-mcp" target="_blank" rel="noopener">github.com/FEMZYKENTLTD/echocare-kinship-alexa-mcp</a></span>
+  <span>Companion OSS toolkit: <a href="https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit" target="_blank" rel="noopener">alexa-mcp-2025-kit</a></span>
+  <span class="muted">Wellness screening demo — not medical advice or diagnosis.</span>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

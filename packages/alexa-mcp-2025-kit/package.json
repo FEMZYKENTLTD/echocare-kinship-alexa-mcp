@@ -1,0 +1,44 @@
+{
+  "name": "alexa-mcp-2025-kit",
+  "version": "1.0.0",
+  "description": "Open-source toolkit for building Alexa+ MCP servers on the MCP 2025-11-25 Streamable HTTP specification: session/Origin/protocol guard, SSE resumability event store, MCP Apps (ui://) tool binder, SKILL.md loader, and an 8-point live compliance audit. Synced local workspace copy of https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit.git"
+  },
+  "homepage": "https://github.com/FEMZYKENTLTD/alexa-mcp-2025-kit",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "keywords": [
+    "alexa-plus",
+    "mcp",
+    "model-context-protocol",
+    "mcp-2025-11-25",
+    "streamable-http",
+    "mcp-apps",
+    "agent-skills"
+  ],
+  "peerDependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
